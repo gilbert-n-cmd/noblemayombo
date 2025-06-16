@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    </style>
+</head>
+<body>
+
+  <header>
+    <div class="top-bar">
+        <div class="logo" style="color: white; font-size: 24px; font-weight: bold;">Noble Mayombo Memorial seed School</div>
+
+        <div id="chat-container">
+          
+            <div class="time"><b>Current Time: <span id="liveTime"></span></b>
+                <b>Current Date: <span id="liveDate"></span></b></div>
+            <button class="chat-btn" onclick="toggleChat()">💬 Chat with Us</button>
+            <div id="chat-box">
+                <div class="chat-header">
+                    <span>Live Chat</span>
+                    <button onclick="toggleChat()">✖</button>
+                </div>
+                <div class="chat-body">
+                    <p>Welcome to Noble Mayombo Memorial seed School! How can we help you?</p>
+                    <input type="text" placeholder="Type your message..." /><br><br>
+                    <button onclick="toggleChat()">send</button>
+                </div>
+            </div>
+        </div>
+
+        <div>+256 779905605 | noble@gmail.ac.ug</div>
+        <div class="right-section">
+            <div class="socials-icons img">
+              <a href="#footer-icons"><i class="fas fa-globe"></i></a>
+              <a href="#footer-icons"><i class="fab fa-instagram"></i></a>
+              <a href="#footer-icons"><i class="fab fa-facebook-f"></i></a>
+              <a href="#footer-icons"><i class="fab fa-whatsapp"></i></a>
+
+            </div>
+
+        <select class="language-selector">
+            <option value="en">English</option>
+            <option value="fr">French</option>
+            <option value="es">Spanish</option>
+        </select>
+    </div>
+    </div>
+  </header>
+  <nav>
+    <button class="nav-toggle" aria-label="Toggle navigation">
+      <span class="hamburger"></span>
+    </button>
+    <a href="home.html">Home</a>
+    <div class="dropdown">
+      <a href="#">Academics &#x25BC;</a>
+    <div class="dropdown-content">
+        <a href="o-level.html">O Level</a>
+        <a href="a-level.html">A Level</a>
+    </div>
+    </div>
+    <div class="dropdown">
+      <a href="#">About &#x25BC;</a>
+      <div class="dropdown-content">
+        <a href="About-Brigadier-Noble-Mayobo.html">About Brigadier Noble Mayobo</a>
+        <a href="Staff.html">Staff</a>
+        <a href="student-life.html">Student-life</a>
+        <a href="history.html">School history</a>
+        <a href="Academic-performance.html">Academic performance</a>
+        
+        <a href="gallery.html">Gallery</a>
+        <a href="Board-of-Governors.html">Board of Governors</a>
+        <a href="PTA-executives.html">PTA executives</a>
+        <div class="dropdown-submenu">
+          <a href="#">Clubs & Facilities</a>
+            <div class="dropdown-submenu-content">
+              <a href="Catholic.html">Catholic</a>
+              <a href="Scripture-Union.html">Scripture union</a>
+              <a href="muslim-comunity.html">Muslim community</a>
+              <a href="MDD.html">MDD</a>
+              <a href="Debating-Club.html">Debating Club</a>
+              
+            </div>
+          </div>
+        
+      </div>
+    </div>
+    <a href="news-updates.html">News & updates</a>
+    <a href="calendar-event.html">Calendar & event</a>
+    <a href="https://forms.gle/QkhdYqyWvCrTrn8Q9">Contact</a>
+    <div class="dropdown">
+      <a href="#">Apply Online &#x25BC;</a>
+      <div class="dropdown-content">
+          <a href="https://forms.gle/ETV3e5VFoF3JrhD86">O Level</a>
+          <a href="a-level.html">A Level</a>
+      </div>
+      </div>
+    <button class="search-toggle" aria-label="Toggle search">
+      <i class="fas fa-search"></i>
+    </button>
+  </nav>
+  <!---<div id="splash-screen" class="splash">
+        <img src="images/loading.gif" alt="About Us Introduction">--->
+       
+    </div>
+  <div class="search-bar" style="display:none;">
+    <form action="search_results.php" method="GET" style="display:flex; gap:5px;">
+      <input type="text" name="q" placeholder="Search..." required />
+      <button type="submit">Search</button>
+    </form>
+  </div>
+  <button id="backToTopBtn" onclick="scrollToTop()">↑↑↑↑</button>
+  <div class="brightness-controls">
+    <button onclick="setBrightness('low')">Low</button>
+    <button onclick="setBrightness('medium')">Medium</button>
+    <button onclick="setBrightness('high')">High</button>
+  </div>
+  <main style="max-width: 600px; margin: 40px auto; padding: 20px; background-color: #4d749b; border-radius: 8px; color: white;">
+    <div id="login-container">
+      <h1>Admin Login</h1>
+      <form id="login-form">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" required style="width: 100%; padding: 8px; margin-bottom: 15px; border-radius: 4px; border: none;"><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" required style="width: 100%; padding: 8px; margin-bottom: 15px; border-radius: 4px; border: none;"><br>
+        <button type="submit" style="background-color: white; color: #4d749b; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Login</button>
+      </form>
+      <div style="margin-top: 10px;">
+        <button id="register-btn" style="background-color: transparent; color: white; border: none; cursor: pointer; margin-right: 10px;">Register</button>
+        <button id="forgot-btn" style="background-color: transparent; color: white; border: none; cursor: pointer;">Forgot Password</button>
+      </div>
+    </div>
+
+    <div id="register-container" style="display:none; margin-top: 20px; color: white;">
+      <h1>Register</h1>
+      <form id="register-form" action="register_handler.php" method="POST">
+        <label for="reg-email">Email:</label><br>
+        <input type="email" id="reg-email" name="email" required style="width: 100%; padding: 8px; margin-bottom: 15px; border-radius: 4px; border: none;"><br>
+        <label for="reg-username">Username:</label><br>
+        <input type="text" id="reg-username" name="username" required style="width: 100%; padding: 8px; margin-bottom: 15px; border-radius: 4px; border: none;"><br>
+        <label for="reg-password">Set Password:</label><br>
+        <input type="password" id="reg-password" name="password" required style="width: 100%; padding: 8px; margin-bottom: 15px; border-radius: 4px; border: none;"><br>
+        <button type="submit" style="background-color: white; color: #4d749b; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Submit</button>
+        <button type="button" id="cancel-register" style="background-color: transparent; color: white; border: none; cursor: pointer; margin-left: 10px;">Cancel</button>
+      </form>
+    </div>
+    <div id="admin-form-container" style="display:none;">
+      <h1>Admin Information Entry</h1>
+      <form action="admin_handler.php" method="POST">
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title" required style="width: 100%; padding: 8px; margin-bottom: 15px; border-radius: 4px; border: none;"><br>
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" rows="5" required style="width: 100%; padding: 8px; margin-bottom: 15px; border-radius: 4px; border: none;"></textarea><br>
+        <button type="submit" style="background-color: white; color: #4d749b; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Add Information</button>
+      </form>
+    </div>
+  </main>
+  <script>
+    // Function to get URL query parameters
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    // Show login form and display message if registered=1 in URL
+    window.onload = function() {
+      const registered = getQueryParam('registered');
+      if (registered === '1') {
+        // Show success message in the page instead of alert
+        const messageDiv = document.createElement('div');
+        messageDiv.style.backgroundColor = '#d4edda';
+        messageDiv.style.color = '#155724';
+        messageDiv.style.padding = '10px';
+        messageDiv.style.marginBottom = '15px';
+        messageDiv.style.borderRadius = '4px';
+        messageDiv.textContent = 'Registration successful! Please log in with your new credentials.';
+        const main = document.querySelector('main');
+        main.insertBefore(messageDiv, main.firstChild);
+
+        document.getElementById('login-container').style.display = 'block';
+        document.getElementById('register-container').style.display = 'none';
+        document.getElementById('admin-form-container').style.display = 'none';
+      }
+
+      const success = getQueryParam('success');
+      if (success === '1') {
+        const messageDiv = document.createElement('div');
+        messageDiv.style.backgroundColor = '#d1ecf1';
+        messageDiv.style.color = '#0c5460';
+        messageDiv.style.padding = '10px';
+        messageDiv.style.marginBottom = '15px';
+        messageDiv.style.borderRadius = '4px';
+        messageDiv.textContent = 'Admin information added successfully.';
+        const main = document.querySelector('main');
+        main.insertBefore(messageDiv, main.firstChild);
+      }
+    };
+
+    document.getElementById('login-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      // Perform login via AJAX to login_handler.php
+      fetch('login_handler.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          document.getElementById('login-container').style.display = 'none';
+          document.getElementById('register-container').style.display = 'none';
+          document.getElementById('admin-form-container').style.display = 'block';
+        } else {
+          alert('Invalid username or password');
+        }
+      })
+      .catch(error => {
+        alert('Error during login: ' + error);
+      });
+    });
+
+    document.getElementById('register-btn').addEventListener('click', function() {
+      document.getElementById('login-container').style.display = 'none';
+      document.getElementById('register-container').style.display = 'block';
+      document.getElementById('admin-form-container').style.display = 'none';
+    });
+
+    document.getElementById('forgot-btn').addEventListener('click', function() {
+      alert('Forgot password functionality is not implemented yet.');
+    });
+
+    document.getElementById('cancel-register').addEventListener('click', function() {
+      document.getElementById('register-container').style.display = 'none';
+      document.getElementById('login-container').style.display = 'block';
+    });
+  </script>
+  <footer class="footer">
+    <div class="footer-column">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="home.html">Home</a></li>
+        <li><a href="#">Programs</a></li>
+        <li><a href="history.html">About</a></li>
+        <li><a href="https://forms.gle/QkhdYqyWvCrTrn8Q9">Contact</a></li>
+        <li><a href="https://forms.gle/ETV3e5VFoF3JrhD86">Apply Online</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h3>Contact Us</h3>
+      <p>Location: P.O.Box 112,Arua</p>
+      <p>Phone: +256-779-905-605</p>
+      <p>Email: noble@gmail.ac.ug</p>
+    </div>
+    <div class="footer-column">
+      <h3>Opening Hours</h3>
+      <p>Mon - Fri: 8:00 AM - 6:00 PM</p>
+      <p>Sat: 9:00 AM - 4:00 PM</p>
+      <p>Sun: Closed</p>
+    </div>
+    <div class="footer-bottom">
+      <marquee><p>&copy; 2025 NOble Mayombo Memorial Seed Secondary School. All rights reserved.<br>Designed by: ATUMA GILBERT : 0779905605 </p></marquee>
+
+    </div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
