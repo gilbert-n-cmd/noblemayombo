@@ -14,49 +14,48 @@
 
   <header>
     <div class="top-bar">
-        <div class="logo" style="color: white; font-size: 24px; font-weight: bold;">Noble Mayombo Memorial seed School</div>
-
-        <div id="chat-container">
-          
-            <div class="time"><b>Current Time: <span id="liveTime"></span></b>
-                <b>Current Date: <span id="liveDate"></span></b></div>
-            <button class="chat-btn" onclick="toggleChat()">💬 Chat with Us</button>
-            <div id="chat-box">
-                <div class="chat-header">
-                    <span>Live Chat</span>
-                    <button onclick="toggleChat()">✖</button>
-                </div>
-                <div class="chat-body">
-                    <p>Welcome to Noble Mayombo Memorial seed School! How can we help you?</p>
-                    <input type="text" placeholder="Type your message..." /><br><br>
-                    <button onclick="toggleChat()">send</button>
-                </div>
-            </div>
+      <div class="logo" style="color: white; font-size: 24px; font-weight: bold;">Noble Mayombo Memorial seed School</div>
+      <div id="chat-container">
+       
+        <div class="time">
+          <b>Current Time: <span id="liveTime"></span></b>
+          <b>Current Date: <span id="liveDate"></span></b>
         </div>
-
-        <div>+256 779905605 | noble@gmail.ac.ug</div>
-        <div class="right-section">
-            <div class="socials-icons img">
-              <a href="#footer-icons"><i class="fas fa-globe"></i></a>
-              <a href="#footer-icons"><i class="fab fa-instagram"></i></a>
-              <a href="#footer-icons"><i class="fab fa-facebook-f"></i></a>
-              <a href="#footer-icons"><i class="fab fa-whatsapp"></i></a>
-
-            </div>
-
-        <select class="language-selector">
-            <option value="en">English</option>
-            <option value="fr">French</option>
-            <option value="es">Spanish</option>
-        </select>
+        <!---<button class="chat-btn" onclick="toggleChat()">💬 Chat with Us</button>--->
+       <div id="chat-box">
+        <!---<div class="chat-header">
+          <span>Live Chat</span>
+          <button onclick="toggleChat()">✖</button>
+        </div>--->
+        <!---<div class="chat-body">
+          <p>Welcome to Noble Mayombo Memorial seed School! How can we help you?</p>
+          <input type="text" placeholder="Type your message..." /><br /><br />
+          <button onclick="toggleChat()">send</button>
+        </div>--->
+      </div>
     </div>
+      <div>+256 779905605 | noble@gmail.ac.ug</div>
+      <div class="right-section">
+        <div class="socials-icons img">
+          <a href="#footer-icons"><i class="fas fa-globe"></i></a>
+          <a href="#footer-icons"><i class="fab fa-instagram"></i></a>
+          <a href="#footer-icons"><i class="fab fa-facebook-f"></i></a>
+          <a href="#footer-icons"><i class="fab fa-whatsapp"></i></a>
+        </div>
+        <select class="language-selector">
+          <option value="en">English</option>
+          <option value="fr">French</option>
+          <option value="es">Spanish</option>
+        </select>
+      </div>
     </div>
   </header>
+
   <nav>
     <button class="nav-toggle" aria-label="Toggle navigation">
       <span class="hamburger"></span>
     </button>
-    <a href="home.html">Home</a>
+    <a href="index.html">Home</a>
     <div class="dropdown">
       <a href="#">Academics &#x25BC;</a>
     <div class="dropdown-content">
@@ -94,32 +93,35 @@
     <a href="calendar-event.html">Calendar & event</a>
     <a href="https://forms.gle/QkhdYqyWvCrTrn8Q9">Contact</a>
     <div class="dropdown">
-      <a href="#">Apply Online &#x25BC;</a>
-      <div class="dropdown-content">
-          <a href="https://forms.gle/ETV3e5VFoF3JrhD86">O Level</a>
-          <a href="a-level.html">A Level</a>
-      </div>
-      </div>
+    <a href="#">Apply Online &#x25BC;</a>
+    <div class="dropdown-content">
+        <a href="https://forms.gle/ETV3e5VFoF3JrhD86">O Level</a>
+        <a href="a-level.html">A Level</a>
+    </div>
+    </div>
     <button class="search-toggle" aria-label="Toggle search">
       <i class="fas fa-search"></i>
     </button>
   </nav>
   <!---<div id="splash-screen" class="splash">
-        <img src="images/loading.gif" alt="About Us Introduction">--->
+        <img src="images/loading.gif" alt="About Us Introduction">
        
-    </div>
-  <div class="search-bar" style="display:none;">
-    <form action="search_results.php" method="GET" style="display:flex; gap:5px;">
+    </div>--->
+ <div class="search-bar" style="display:none;">
+    <!---<form action="search_results.php" method="GET" style="display:flex; gap:5px;">
       <input type="text" name="q" placeholder="Search..." required />
       <button type="submit">Search</button>
-    </form>
+    </form>--->
+    <script async src="https://cse.google.com/cse.js?cx=b374e5ea123af4b1b">
+    </script>
+<div class="gcse-search"></div>    
   </div>
-  <button id="backToTopBtn" onclick="scrollToTop()">↑↑↑↑</button>
-  <div class="brightness-controls">
+  <button id="backToTopBtn" onclick="scrollToTop()">↑</button>
+  <!--<div class="brightness-controls">
     <button onclick="setBrightness('low')">Low</button>
     <button onclick="setBrightness('medium')">Medium</button>
     <button onclick="setBrightness('high')">High</button>
-  </div>
+  </div>--->
   <main style="max-width: 600px; margin: 40px auto; padding: 20px; background-color: #4d749b; border-radius: 8px; color: white;">
     <div id="login-container">
       <h1>Admin Login</h1>
@@ -185,7 +187,8 @@
       <p>Sun: Closed</p>
     </div>
     <div class="footer-bottom">
-      <marquee><p>&copy; 2025 NOble Mayombo Memorial Seed Secondary School. All rights reserved.<br>Designed by: ATUMA GILBERT : 0779905605 </p></marquee>
+            <marquee><p>&copy; 2025 NOble Mayombo Memorial Seed Secondary School. All rights reserved.<br>Designed by:<br> ATUMA GILBERT <br>www.gilbertatuma700@gmail.com<br> 0779905605 </p></marquee>
+
 
     </div>
   </footer>
