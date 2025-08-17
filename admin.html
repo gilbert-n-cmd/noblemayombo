@@ -219,7 +219,15 @@ import{getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from
     const email=document.getElementById('reg-email').value;
      const username=document.getElementById('reg-username').value;
      const password=document.getElementById('reg-password').value;
-    
+    const auth=getAuth;
+    constdb=getFirestore();
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential)=>{
+      const userData={
+        email:email,
+        username:username,
+        password:password
+    })
   })
 </script>
 
@@ -227,6 +235,7 @@ import{getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from
 
 </body>
 </html>
+
 
 
 
