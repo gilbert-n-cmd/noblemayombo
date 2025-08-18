@@ -200,113 +200,109 @@
   </footer>
   <script src="script.js"></script>
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-    import { getFirestore, collection, query, where, getDocs, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+ // Import Firebase SDKs
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+  import { 
+    getAuth, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword,
+    sendPasswordResetEmail
+  } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+  import { 
+    getFirestore, 
+    setDoc, 
+    doc 
+  } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-    // 🔹 Your Firebase config (replace with your own from Firebase Console)
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT.appspot.com",
-      messagingSenderId: "SENDER_ID",
-      appId: "APP_ID"
-    };
+  // Your Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyD2g8x-tvOkFI0mi0gTzU2vFLo4aj8wB0s",
+    authDomain: "noble-register.firebaseapp.com",
+    projectId: "noble-register",
+    storageBucket: "noble-register.firebasestorage.app",
+    messagingSenderId: "280367520296",
+    appId: "1:280367520296:web:29b32c0f9669bdfae6731d"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+  // ✅ Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-    // Switch Views
-    document.getElementById('goto-register').onclick = () => {
-      document.getElementById('login-container').style.display = 'none';
-      document.getElementById('register-container').style.display = 'block';
-    };
-    document.getElementById('goto-login').onclick = () => {
-      document.getElementById('register-container').style.display = 'none';
-      document.getElementById('login-container').style.display = 'block';
-    };
+  // ---------------- REGISTER ----------------
+  const signUp = document.getElementById('register-form');
+  signUp.addEventListener('submit', (event) => {
+    event.preventDefault();
 
-    // Register
-    const registerForm = document.getElementById('register-form');
-    registerForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('reg-email').value.trim();
-      const username = document.getElementById('reg-username').value.trim();
-      const password = document.getElementById('reg-password').value;
-      try {
-        // check duplicate username
-        const q = query(collection(db, "users"), where("username", "==", username));
-        const snap = await getDocs(q);
-        if (!snap.empty) {
-          alert("❌ Username already taken.");
-        } else {
-          const userCred = await createUserWithEmailAndPassword(auth, email, password);
-          await setDoc(doc(db, "users", userCred.user.uid), { email, username });
-          alert("✅ Registered!");
-          document.getElementById('register-container').style.display = 'none';
-          document.getElementById('login-container').style.display = 'block';
-        }
-      } catch (err) {
-        alert("❌ Error: " + err.message);
-      } finally {
-        registerForm.reset(); // 🔹 clears always
-      }
-    });
+    const email = document.getElementById('reg-email').value;
+    const username = document.getElementById('reg-username').value;
+    const password = document.getElementById('reg-password').value;
 
-    // Login
-    const loginForm = document.getElementById('login-form');
-    loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      let loginInput = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value;
-      try {
-        let email = loginInput;
-        if (!loginInput.includes("@")) {
-          const q = query(collection(db, "users"), where("username", "==", loginInput));
-          const snap = await getDocs(q);
-          if (snap.empty) {
-            alert("❌ Username not found");
-            return;
-          }
-          email = snap.docs[0].data().email;
-        }
-        await signInWithEmailAndPassword(auth, email, password);
-        alert("✅ Logged in!");
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+
+        return setDoc(doc(db, "users", user.uid), {
+          email: email,
+          username: username
+        });
+      })
+      .then(() => {
+        alert('✅ User registered successfully!');
+        document.getElementById('register-container').style.display = 'none';
+        document.getElementById('login-container').style.display = 'block';
+      })
+      .catch((error) => {
+        alert("❌ Error registering: " + error.message);
+      });
+  });
+
+  // ---------------- LOGIN ----------------
+  const loginForm = document.getElementById('login-form');
+  loginForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const email = document.getElementById('username').value; // using username field as email
+    const password = document.getElementById('password').value;
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        alert('✅ Login successful!');
         document.getElementById('login-container').style.display = 'none';
         document.getElementById('admin-form-container').style.display = 'block';
-      } catch (err) {
-        alert("❌ Login failed: " + err.message);
-      } finally {
-        loginForm.reset(); // 🔹 clears always
-      }
-    });
+      })
+      .catch((error) => {
+        alert("❌ Login failed: " + error.message);
+      });
+  });
 
-    // Forgot Password
-    document.getElementById('forgot-btn').addEventListener('click', async () => {
-      const email = prompt("Enter your email to reset password:");
-      if (email) {
-        try {
-          await sendPasswordResetEmail(auth, email);
-          alert("📧 Password reset email sent!");
-        } catch (err) {
-          alert("❌ Error: " + err.message);
-        }
-      }
-    });
+  // ---------------- FORGOT PASSWORD ----------------
+  document.getElementById('forgot-btn').addEventListener('click', () => {
+    const email = prompt("Enter your registered email to reset password:");
+    if (email) {
+      sendPasswordResetEmail(auth, email)
+        .then(() => {
+          alert("📧 Password reset email sent. Check your inbox!");
+        })
+        .catch((error) => {
+          alert("❌ Error: " + error.message);
+        });
+    }
+  });
 
-    // Logout
-    document.getElementById('logout-btn').onclick = async () => {
-      await signOut(auth);
-      document.getElementById('admin-form-container').style.display = 'none';
-      document.getElementById('login-container').style.display = 'block';
-    };
+  // ---------------- BUTTONS ----------------
+  document.getElementById('register-btn').addEventListener('click', function() {
+    document.getElementById('login-container').style.display = 'none';
+    document.getElementById('register-container').style.display = 'block';
+  });
+
+  document.getElementById('cancel-register').addEventListener('click', function() {
+    document.getElementById('register-container').style.display = 'none';
+    document.getElementById('login-container').style.display = 'block';
+  });
 </script>
 
 </body>
 </html>
-
-
 
 
