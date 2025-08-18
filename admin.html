@@ -257,11 +257,12 @@
         console.error(error);
       });
   });
+  signUp.reset();
 // After successful registration
-signUp.reset();
+//signUp.reset();
 
 // After successful login
-loginForm.reset();
+//loginForm.reset();
 
 // On error, you can optionally clear just the password
 document.getElementById('password').value = "";
@@ -284,6 +285,7 @@ document.getElementById('reg-password').value = "";
         alert("Login failed: " + error.message);
       });
   });
+  loginForm.reset();
 
   // ---------------- BUTTONS ----------------
   document.getElementById('register-btn').addEventListener('click', function() {
@@ -303,6 +305,7 @@ document.getElementById('reg-password').value = "";
 
 </body>
 </html>
+
 
 
 
