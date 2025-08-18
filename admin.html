@@ -200,29 +200,21 @@
   </footer>
   <script src="script.js"></script>
 <script type="module">
- document.getElementById('register-btn').addEventListener('click', function() {
-    document.getElementById('login-container').style.display = 'none';
-    document.getElementById('register-container').style.display = 'block';
-});
-
-document.getElementById('forgot-btn').addEventListener('click', function() {
-    alert('We are sorry to hear that,please visit the admin.');// Forgot Password functionality is not implemented yet.');
-});
-
-// Assuming you have a cancel button in the register form
-document.getElementById('cancel-register').addEventListener('click', function() {
-    document.getElementById('register-container').style.display = 'none';
-    document.getElementById('login-container').style.display = 'block';
-});
-
-// Import the functions you need from the SDKs you need
+ // Import Firebase SDKs
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-import{getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from"https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js"
- import{getFirestore, setDoc, doc} from"https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js"
-  
-  // Your web app's Firebase configuration
+  import { 
+    getAuth, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword,
+    sendPasswordResetEmail
+  } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+  import { 
+    getFirestore, 
+    setDoc, 
+    doc 
+  } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+  // Your Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyD2g8x-tvOkFI0mi0gTzU2vFLo4aj8wB0s",
     authDomain: "noble-register.firebaseapp.com",
@@ -232,41 +224,86 @@ import{getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from
     appId: "1:280367520296:web:29b32c0f9669bdfae6731d"
   };
 
-  // Firebase registration logic
-const signUp = document.getElementById('register-form');
-signUp.addEventListener('submit', (event) => {
+  // ✅ Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // ---------------- REGISTER ----------------
+  const signUp = document.getElementById('register-form');
+  signUp.addEventListener('submit', (event) => {
     event.preventDefault();
+
     const email = document.getElementById('reg-email').value;
     const username = document.getElementById('reg-username').value;
     const password = document.getElementById('reg-password').value;
 
-    const auth = getAuth(app); // Initialize auth
-    const db = getFirestore(app); // Initialize Firestore
-
     createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            const userData = {
-                email: email,
-                username: username,
-                // Do not store passwords in plain text
-            };
-            // Save user data to Firestore
-            setDoc(doc(db, "users", user.uid), userData)
-                .then(() => {
-                    alert('User  registered successfully!');
-                })
-                .catch((error) => {
-                    console.error("Error adding document: ", error);
-                });
+      .then((userCredential) => {
+        const user = userCredential.user;
+
+        return setDoc(doc(db, "users", user.uid), {
+          email: email,
+          username: username
+        });
+      })
+      .then(() => {
+        alert('✅ User registered successfully!');
+        document.getElementById('register-container').style.display = 'none';
+        document.getElementById('login-container').style.display = 'block';
+      })
+      .catch((error) => {
+        alert("❌ Error registering: " + error.message);
+      });
+  });
+
+  // ---------------- LOGIN ----------------
+  const loginForm = document.getElementById('login-form');
+  loginForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const email = document.getElementById('username').value; // using username field as email
+    const password = document.getElementById('password').value;
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        alert('✅ Login successful!');
+        document.getElementById('login-container').style.display = 'none';
+        document.getElementById('admin-form-container').style.display = 'block';
+      })
+      .catch((error) => {
+        alert("❌ Login failed: " + error.message);
+      });
+  });
+
+  // ---------------- FORGOT PASSWORD ----------------
+  document.getElementById('forgot-btn').addEventListener('click', () => {
+    const email = prompt("Enter your registered email to reset password:");
+    if (email) {
+      sendPasswordResetEmail(auth, email)
+        .then(() => {
+          alert("📧 Password reset email sent. Check your inbox!");
         })
         .catch((error) => {
-            console.error("Error registering user: ", error);
+          alert("❌ Error: " + error.message);
         });
-});
+    }
+  });
+
+  // ---------------- BUTTONS ----------------
+  document.getElementById('register-btn').addEventListener('click', function() {
+    document.getElementById('login-container').style.display = 'none';
+    document.getElementById('register-container').style.display = 'block';
+  });
+
+  document.getElementById('cancel-register').addEventListener('click', function() {
+    document.getElementById('register-container').style.display = 'none';
+    document.getElementById('login-container').style.display = 'block';
+  });
 </script>
 
 </body>
 </html>
+
 
 
