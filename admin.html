@@ -200,8 +200,7 @@
   </footer>
   <script src="script.js"></script>
 <script type="module">
-  >
-  // Import Firebase SDKs
+ // Import Firebase SDKs
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
   import { 
     getAuth, 
@@ -212,11 +211,7 @@
   import { 
     getFirestore, 
     setDoc, 
-    doc, 
-    collection, 
-    getDocs, 
-    query, 
-    where 
+    doc 
   } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
   // Your Firebase config
@@ -236,94 +231,66 @@
 
   // ---------------- REGISTER ----------------
   const signUp = document.getElementById('register-form');
-  signUp.addEventListener('submit', async (event) => {
+  signUp.addEventListener('submit', (event) => {
     event.preventDefault();
 
-    const email = document.getElementById('reg-email').value.trim();
-    const username = document.getElementById('reg-username').value.trim();
+    const email = document.getElementById('reg-email').value;
+    const username = document.getElementById('reg-username').value;
     const password = document.getElementById('reg-password').value;
 
-    try {
-      // 🔹 Check for duplicate username
-      const q = query(collection(db, "users"), where("username", "==", username));
-      const snapshot = await getDocs(q);
-      if (!snapshot.empty) {
-        alert("❌ Username already taken. Please choose another.");
-      } else {
-        // Create user in Firebase Auth
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
         const user = userCredential.user;
 
-        // Save user data in Firestore
-        await setDoc(doc(db, "users", user.uid), {
+        return setDoc(doc(db, "users", user.uid), {
           email: email,
           username: username
         });
-
+      })
+      .then(() => {
         alert('✅ User registered successfully!');
         document.getElementById('register-container').style.display = 'none';
         document.getElementById('login-container').style.display = 'block';
-      }
-    } catch (error) {
-      alert("❌ Error registering: " + error.message);
-    } finally {
-      // 🔹 Always clear fields (success or failure)
-      signUp.reset();
-    }
+      })
+      .catch((error) => {
+        alert("❌ Error registering: " + error.message);
+      });
   });
 
-  // ---------------- LOGIN (Email or Username) ----------------
+  // ---------------- LOGIN ----------------
   const loginForm = document.getElementById('login-form');
-  loginForm.addEventListener('submit', async (event) => {
+  loginForm.addEventListener('submit', (event) => {
     event.preventDefault();
 
-    let loginInput = document.getElementById('username').value.trim();
+    const email = document.getElementById('username').value; // using username field as email
     const password = document.getElementById('password').value;
 
-    try {
-      let email = loginInput;
-
-      // 🔹 If input does not look like an email, treat it as username
-      if (!loginInput.includes("@")) {
-        const q = query(collection(db, "users"), where("username", "==", loginInput));
-        const snapshot = await getDocs(q);
-
-        if (snapshot.empty) {
-          alert("❌ Username not found.");
-          return; // (fields still clear in finally)
-        }
-
-        email = snapshot.docs[0].data().email; // use matched email
-      }
-
-      // Firebase Auth login
-      await signInWithEmailAndPassword(auth, email, password);
-
-      alert('✅ Login successful!');
-      document.getElementById('login-container').style.display = 'none';
-      document.getElementById('admin-form-container').style.display = 'block';
-    } catch (error) {
-      alert("❌ Login failed: " + error.message);
-    } finally {
-      // 🔹 Always clear fields (success or failure)
-      loginForm.reset();
-    }
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        alert('✅ Login successful!');
+        document.getElementById('login-container').style.display = 'none';
+        document.getElementById('admin-form-container').style.display = 'block';
+      })
+      .catch((error) => {
+        alert("❌ Login failed: " + error.message);
+      });
   });
 
   // ---------------- FORGOT PASSWORD ----------------
-  document.getElementById('forgot-btn').addEventListener('click', async () => {
+  document.getElementById('forgot-btn').addEventListener('click', () => {
     const email = prompt("Enter your registered email to reset password:");
     if (email) {
-      try {
-        await sendPasswordResetEmail(auth, email);
-        alert("📧 Password reset email sent. Check your inbox (or spam)!");
-      } catch (error) {
-        alert("❌ Error: " + error.message);
-      }
+      sendPasswordResetEmail(auth, email)
+        .then(() => {
+          alert("📧 Password reset email sent. Check your inbox!");
+        })
+        .catch((error) => {
+          alert("❌ Error: " + error.message);
+        });
     }
   });
 
-  // ---------------- UI SWITCHING ----------------
+  // ---------------- BUTTONS ----------------
   document.getElementById('register-btn').addEventListener('click', function() {
     document.getElementById('login-container').style.display = 'none';
     document.getElementById('register-container').style.display = 'block';
@@ -337,10 +304,5 @@
 
 </body>
 </html>
-
-
-
-
-
 
 
