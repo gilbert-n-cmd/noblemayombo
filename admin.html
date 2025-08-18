@@ -257,7 +257,15 @@
         console.error(error);
       });
   });
+// After successful registration
+signUp.reset();
 
+// After successful login
+loginForm.reset();
+
+// On error, you can optionally clear just the password
+document.getElementById('password').value = "";
+document.getElementById('reg-password').value = "";
   // ---------------- LOGIN ----------------
   const loginForm = document.getElementById('login-form');
   loginForm.addEventListener('submit', (event) => {
@@ -295,6 +303,7 @@
 
 </body>
 </html>
+
 
 
 
