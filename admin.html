@@ -200,6 +200,7 @@
   </footer>
   <script src="script.js"></script>
 <script type="module">
+  >
   // Import Firebase SDKs
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
   import { 
@@ -213,7 +214,9 @@
     setDoc, 
     doc, 
     collection, 
-    getDocs 
+    getDocs, 
+    query, 
+    where 
   } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
   // Your Firebase config
@@ -241,20 +244,31 @@
     const password = document.getElementById('reg-password').value;
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+      // 🔹 Check for duplicate username
+      const q = query(collection(db, "users"), where("username", "==", username));
+      const snapshot = await getDocs(q);
+      if (!snapshot.empty) {
+        alert("❌ Username already taken. Please choose another.");
+      } else {
+        // Create user in Firebase Auth
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
 
-      await setDoc(doc(db, "users", user.uid), {
-        email: email,
-        username: username
-      });
+        // Save user data in Firestore
+        await setDoc(doc(db, "users", user.uid), {
+          email: email,
+          username: username
+        });
 
-      alert('✅ User registered successfully!');
-      signUp.reset(); // clear fields
-      document.getElementById('register-container').style.display = 'none';
-      document.getElementById('login-container').style.display = 'block';
+        alert('✅ User registered successfully!');
+        document.getElementById('register-container').style.display = 'none';
+        document.getElementById('login-container').style.display = 'block';
+      }
     } catch (error) {
       alert("❌ Error registering: " + error.message);
+    } finally {
+      // 🔹 Always clear fields (success or failure)
+      signUp.reset();
     }
   });
 
@@ -271,35 +285,28 @@
 
       // 🔹 If input does not look like an email, treat it as username
       if (!loginInput.includes("@")) {
-        const q = await getDocs(collection(db, "users"));
-        let foundUser = null;
-        q.forEach((docSnap) => {
-          const data = docSnap.data();
-          if (data.username === loginInput) {
-            foundUser = data;
-          }
-        });
+        const q = query(collection(db, "users"), where("username", "==", loginInput));
+        const snapshot = await getDocs(q);
 
-        if (!foundUser) {
+        if (snapshot.empty) {
           alert("❌ Username not found.");
-          loginForm.reset(); // clear wrong input
-          return;
+          return; // (fields still clear in finally)
         }
 
-        email = foundUser.email;
+        email = snapshot.docs[0].data().email; // use matched email
       }
 
       // Firebase Auth login
       await signInWithEmailAndPassword(auth, email, password);
 
       alert('✅ Login successful!');
-      loginForm.reset(); // clear fields
       document.getElementById('login-container').style.display = 'none';
       document.getElementById('admin-form-container').style.display = 'block';
-
     } catch (error) {
       alert("❌ Login failed: " + error.message);
-      loginForm.reset(); // clear on failure too
+    } finally {
+      // 🔹 Always clear fields (success or failure)
+      loginForm.reset();
     }
   });
 
@@ -309,7 +316,7 @@
     if (email) {
       try {
         await sendPasswordResetEmail(auth, email);
-        alert("📧 Password reset email sent. Check your inbox!");
+        alert("📧 Password reset email sent. Check your inbox (or spam)!");
       } catch (error) {
         alert("❌ Error: " + error.message);
       }
@@ -330,6 +337,7 @@
 
 </body>
 </html>
+
 
 
 
