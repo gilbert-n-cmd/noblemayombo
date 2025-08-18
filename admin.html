@@ -229,12 +229,27 @@ import{getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from
         password:password
     })
   })
+   document.getElementById('register-btn').addEventListener('click', function() {
+    document.getElementById('login-container').style.display = 'none';
+    document.getElementById('register-container').style.display = 'block';
+});
+
+document.getElementById('forgot-btn').addEventListener('click', function() {
+    alert('We are sorry to hear that,please visit the admin.');// Forgot Password functionality is not implemented yet.');
+});
+
+// Assuming you have a cancel button in the register form
+document.getElementById('cancel-register').addEventListener('click', function() {
+    document.getElementById('register-container').style.display = 'none';
+    document.getElementById('login-container').style.display = 'block';
+});
 </script>
 
 
 
 </body>
 </html>
+
 
 
 
