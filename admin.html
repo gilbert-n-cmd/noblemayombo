@@ -50,7 +50,7 @@
       </div>
     </div>
   </header>
-
+<div id="protected-content" style="display:none;">
   <nav>
     <button class="nav-toggle" aria-label="Toggle navigation">
       <span class="hamburger"></span>
@@ -103,6 +103,7 @@
       <i class="fas fa-search"></i>
     </button>
   </nav>
+</div>
   <!---<div id="splash-screen" class="splash">
         <img src="images/loading.gif" alt="About Us Introduction">
        
@@ -276,17 +277,23 @@ document.getElementById('reg-password').value = "";
     const password = document.getElementById('password').value;
 
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        alert('Login successful!');
-        document.getElementById('login-container').style.display = 'none';
-        document.getElementById('admin-form-container').style.display = 'block';
-      })
-      .catch((error) => {
-        alert("Login failed: " + error.message);
-      });
-  });
-  loginForm.reset();
+  .then((userCredential) => {
+    alert('✅ Login successful!');
+    
+    // Hide login container
+    document.getElementById('login-container').style.display = 'none';
+    document.getElementById('register-container').style.display = 'none';
 
+    // Show protected content
+    document.getElementById('protected-content').style.display = 'block';
+
+    // Optional: clear login form
+    loginForm.reset();
+  })
+  .catch((error) => {
+    alert("❌ Login failed: " + error.message);
+    document.getElementById('password').value = "";
+  });
   // ---------------- BUTTONS ----------------
   document.getElementById('register-btn').addEventListener('click', function() {
     document.getElementById('login-container').style.display = 'none';
@@ -305,6 +312,7 @@ document.getElementById('reg-password').value = "";
 
 </body>
 </html>
+
 
 
 
