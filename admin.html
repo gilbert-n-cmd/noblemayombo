@@ -205,8 +205,7 @@
   import { 
     getAuth, 
     createUserWithEmailAndPassword, 
-    signInWithEmailAndPassword,
-    sendPasswordResetEmail
+    signInWithEmailAndPassword 
   } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
   import { 
     getFirestore, 
@@ -214,7 +213,7 @@
     doc 
   } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-  // Your Firebase config
+  // Your web app's Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyD2g8x-tvOkFI0mi0gTzU2vFLo4aj8wB0s",
     authDomain: "noble-register.firebaseapp.com",
@@ -242,18 +241,20 @@
       .then((userCredential) => {
         const user = userCredential.user;
 
+        // Save user data to Firestore
         return setDoc(doc(db, "users", user.uid), {
           email: email,
           username: username
         });
       })
       .then(() => {
-        alert('✅ User registered successfully!');
+        alert('User registered successfully!');
         document.getElementById('register-container').style.display = 'none';
         document.getElementById('login-container').style.display = 'block';
       })
       .catch((error) => {
-        alert("❌ Error registering: " + error.message);
+        alert("Error registering: " + error.message);
+        console.error(error);
       });
   });
 
@@ -262,38 +263,28 @@
   loginForm.addEventListener('submit', (event) => {
     event.preventDefault();
 
-    const email = document.getElementById('username').value; // using username field as email
+    const email = document.getElementById('username').value; // assuming username is email
     const password = document.getElementById('password').value;
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        alert('✅ Login successful!');
+        alert('Login successful!');
         document.getElementById('login-container').style.display = 'none';
         document.getElementById('admin-form-container').style.display = 'block';
       })
       .catch((error) => {
-        alert("❌ Login failed: " + error.message);
+        alert("Login failed: " + error.message);
       });
-  });
-
-  // ---------------- FORGOT PASSWORD ----------------
-  document.getElementById('forgot-btn').addEventListener('click', () => {
-    const email = prompt("Enter your registered email to reset password:");
-    if (email) {
-      sendPasswordResetEmail(auth, email)
-        .then(() => {
-          alert("📧 Password reset email sent. Check your inbox!");
-        })
-        .catch((error) => {
-          alert("❌ Error: " + error.message);
-        });
-    }
   });
 
   // ---------------- BUTTONS ----------------
   document.getElementById('register-btn').addEventListener('click', function() {
     document.getElementById('login-container').style.display = 'none';
     document.getElementById('register-container').style.display = 'block';
+  });
+
+  document.getElementById('forgot-btn').addEventListener('click', function() {
+    alert('We are sorry to hear that, please visit the admin.');
   });
 
   document.getElementById('cancel-register').addEventListener('click', function() {
@@ -304,5 +295,6 @@
 
 </body>
 </html>
+
 
 
