@@ -200,7 +200,7 @@
   </footer>
   <script src="script.js"></script>
 <script type="module">
- // Import Firebase SDKs
+// Import Firebase SDKs
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
   import { 
     getAuth, 
@@ -250,6 +250,7 @@
       });
 
       alert('✅ User registered successfully!');
+      signUp.reset(); // clear fields
       document.getElementById('register-container').style.display = 'none';
       document.getElementById('login-container').style.display = 'block';
     } catch (error) {
@@ -281,6 +282,7 @@
 
         if (!foundUser) {
           alert("❌ Username not found.");
+          loginForm.reset(); // clear wrong input
           return;
         }
 
@@ -291,11 +293,13 @@
       await signInWithEmailAndPassword(auth, email, password);
 
       alert('✅ Login successful!');
+      loginForm.reset(); // clear fields
       document.getElementById('login-container').style.display = 'none';
       document.getElementById('admin-form-container').style.display = 'block';
 
     } catch (error) {
       alert("❌ Login failed: " + error.message);
+      loginForm.reset(); // clear on failure too
     }
   });
 
@@ -326,6 +330,7 @@
 
 </body>
 </html>
+
 
 
 
