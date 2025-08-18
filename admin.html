@@ -232,26 +232,41 @@ import{getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from
     appId: "1:280367520296:web:29b32c0f9669bdfae6731d"
   };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const signUp=document.getElementById('submit');
-  signUp.AddEventListener('click', (event)=>{
+  // Firebase registration logic
+const signUp = document.getElementById('register-form');
+signUp.addEventListener('submit', (event) => {
     event.preventDefault();
-    const email=document.getElementById('reg-email').value;
-     const username=document.getElementById('reg-username').value;
-     const password=document.getElementById('reg-password').value;
-    const auth=getAuth;
-    constdb=getFirestore();
+    const email = document.getElementById('reg-email').value;
+    const username = document.getElementById('reg-username').value;
+    const password = document.getElementById('reg-password').value;
+
+    const auth = getAuth(app); // Initialize auth
+    const db = getFirestore(app); // Initialize Firestore
+
     createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential)=>{
-      const userData={
-        email:email,
-        username:username,
-        password:password
-    })
-  })
+        .then((userCredential) => {
+            const user = userCredential.user;
+            const userData = {
+                email: email,
+                username: username,
+                // Do not store passwords in plain text
+            };
+            // Save user data to Firestore
+            setDoc(doc(db, "users", user.uid), userData)
+                .then(() => {
+                    alert('User  registered successfully!');
+                })
+                .catch((error) => {
+                    console.error("Error adding document: ", error);
+                });
+        })
+        .catch((error) => {
+            console.error("Error registering user: ", error);
+        });
+});
 </script>
 
 </body>
 </html>
+
 
